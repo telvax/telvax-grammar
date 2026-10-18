@@ -1,0 +1,319 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Telvax",
+  "scopeName": "source.telvax",
+  "patterns": [
+    {
+      "include": "#comment"
+    },
+    {
+      "include": "#attribute"
+    },
+    {
+      "include": "#fstring"
+    },
+    {
+      "include": "#string"
+    },
+    {
+      "include": "#number"
+    },
+    {
+      "include": "#declaration"
+    },
+    {
+      "include": "#keyword"
+    },
+    {
+      "include": "#constant"
+    },
+    {
+      "include": "#path"
+    },
+    {
+      "include": "#type"
+    },
+    {
+      "include": "#macro"
+    },
+    {
+      "include": "#call"
+    },
+    {
+      "include": "#operator"
+    }
+  ],
+  "repository": {
+    "comment": {
+      "name": "comment.line.number-sign.telvax",
+      "match": "#.*$"
+    },
+    "attribute": {
+      "name": "meta.attribute.telvax",
+      "match": "(@)([A-Za-z_][A-Za-z0-9_]*)",
+      "captures": {
+        "1": {
+          "name": "punctuation.definition.attribute.telvax"
+        },
+        "2": {
+          "name": "entity.name.function.decorator.telvax"
+        }
+      }
+    },
+    "escape": {
+      "name": "constant.character.escape.telvax",
+      "match": "\\\\."
+    },
+    "string": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.raw.telvax",
+          "begin": "\\br\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.raw.telvax",
+          "begin": "\\br'",
+          "end": "'",
+          "patterns": [
+            {
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.triple.telvax",
+          "begin": "\"\"\"",
+          "end": "\"\"\"",
+          "patterns": [
+            {
+              "include": "#escape"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.telvax",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "include": "#escape"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.telvax",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            {
+              "include": "#escape"
+            }
+          ]
+        }
+      ]
+    },
+    "fstring": {
+      "patterns": [
+        {
+          "name": "string.quoted.triple.interpolated.telvax",
+          "begin": "\\bf\"\"\"",
+          "end": "\"\"\"",
+          "patterns": [
+            {
+              "include": "#escape"
+            },
+            {
+              "include": "#interpolation"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.interpolated.telvax",
+          "begin": "\\bf\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "include": "#escape"
+            },
+            {
+              "include": "#interpolation"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.interpolated.telvax",
+          "begin": "\\bf'",
+          "end": "'",
+          "patterns": [
+            {
+              "include": "#escape"
+            },
+            {
+              "include": "#interpolation"
+            }
+          ]
+        }
+      ]
+    },
+    "interpolation": {
+      "name": "meta.interpolation.telvax",
+      "begin": "\\{",
+      "end": "\\}",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.section.interpolation.begin.telvax"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.interpolation.end.telvax"
+        }
+      },
+      "patterns": [
+        {
+          "include": "$self"
+        }
+      ]
+    },
+    "number": {
+      "patterns": [
+        {
+          "name": "constant.numeric.float.telvax",
+          "match": "\\b[0-9][0-9_]*\\.[0-9][0-9_]*(?:[eE][+-]?[0-9]+)?\\b"
+        },
+        {
+          "name": "constant.numeric.integer.telvax",
+          "match": "\\b[0-9][0-9_]*\\b"
+        }
+      ]
+    },
+    "keyword": {
+      "patterns": [
+        {
+          "name": "keyword.control.telvax",
+          "match": "\\b(?:if|elif|else|for|while|in|is|return|break|continue|match|case|pass|await)\\b"
+        },
+        {
+          "name": "storage.modifier.async.telvax",
+          "match": "\\basync\\b"
+        },
+        {
+          "name": "keyword.control.import.telvax",
+          "match": "\\b(?:import|from)\\b"
+        },
+        {
+          "name": "keyword.operator.logical.telvax",
+          "match": "\\b(?:and|or|not)\\b"
+        },
+        {
+          "name": "storage.type.telvax",
+          "match": "\\b(?:let|var)\\b"
+        }
+      ]
+    },
+    "constant": {
+      "name": "constant.language.telvax",
+      "match": "\\b(?:True|False|None)\\b"
+    },
+    "declaration": {
+      "patterns": [
+        {
+          "match": "\\b(fn)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": {
+              "name": "storage.type.function.telvax"
+            },
+            "2": {
+              "name": "entity.name.function.telvax"
+            }
+          }
+        },
+        {
+          "match": "^\\s*(type|enum|trait|extend)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": {
+              "name": "storage.type.struct.telvax"
+            },
+            "2": {
+              "name": "entity.name.type.struct.telvax"
+            }
+          }
+        }
+      ]
+    },
+    "path": {
+      "patterns": [
+        {
+          "match": "\\b(std)(?=\\.)",
+          "name": "support.module.std.telvax"
+        }
+      ]
+    },
+    "type": {
+      "patterns": [
+        {
+          "name": "support.type.primitive.telvax",
+          "match": "\\b(?:Int|Float|Text|Date|Timestamp|Bool|i8|i16|i32|i64|u8|u16|u32|u64|f32|f64)\\b"
+        },
+        {
+          "name": "support.type.builtin.telvax",
+          "match": "\\b(?:List|Map|Vector|Tensor|Table|Result)\\b"
+        },
+        {
+          "name": "entity.name.type.telvax",
+          "match": "\\b[A-Z][A-Za-z0-9_]*\\b"
+        }
+      ]
+    },
+    "macro": {
+      "name": "support.function.macro.telvax",
+      "match": "\\b[a-z_][A-Za-z0-9_]*!(?=\\()"
+    },
+    "call": {
+      "name": "entity.name.function.call.telvax",
+      "match": "\\b[a-z_][A-Za-z0-9_]*(?=\\s*\\()"
+    },
+    "operator": {
+      "patterns": [
+        {
+          "name": "keyword.operator.pipe.telvax",
+          "match": "\\|>"
+        },
+        {
+          "name": "keyword.operator.arrow.telvax",
+          "match": "->|=>"
+        },
+        {
+          "name": "keyword.operator.assignment.telvax",
+          "match": "[-+*/]?=(?!=)"
+        },
+        {
+          "name": "keyword.operator.comparison.telvax",
+          "match": "==|!=|<=|>=|<|>"
+        },
+        {
+          "name": "keyword.operator.arithmetic.telvax",
+          "match": "\\*\\*|//|[-+*/%]"
+        },
+        {
+          "name": "keyword.operator.alternative.telvax",
+          "match": "\\|(?!>)"
+        },
+        {
+          "name": "keyword.operator.coalesce.telvax",
+          "match": "\\?\\?"
+        },
+        {
+          "name": "keyword.operator.try.telvax",
+          "match": "\\?"
+        }
+      ]
+    }
+  }
+}
