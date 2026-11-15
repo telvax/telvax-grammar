@@ -1,3 +1,10 @@
+<p align="center">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="assets/symbol-dark.svg">
+<img src="assets/symbol-light.svg" alt="The Telvax symbol: a T made of a 2 by 3 tensor between brackets" width="120">
+</picture>
+</p>
+
 # Telvax grammar
 
 The TextMate grammar for [Telvax](https://github.com/telvax/telvax) (`.tvx` files), scope `source.telvax`.
