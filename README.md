@@ -12,7 +12,7 @@ The TextMate grammar for [Telvax](https://github.com/telvax/telvax) (`.tvx` file
 It is a copy of `editors/vscode/syntaxes/telvax.tmLanguage.json` in `telvax/telvax`, which is where it is
 edited. This repository exists so that tools that take a grammar from a repository, such as
 [GitHub Linguist](https://github.com/github-linguist/linguist), can use it. Do not edit the file here:
-change it in `telvax/telvax` and copy it.
+change it in `telvax/telvax`. A workflow (`.github/workflows/sync.yml`) copies it from there every day, and the line below says from which commit.
 
 Copied from `telvax/telvax` commit `aea7a4c`.
 

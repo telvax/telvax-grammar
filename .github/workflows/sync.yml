@@ -1,0 +1,40 @@
+# Keeps grammars/telvax.tmLanguage.json equal to editors/vscode/syntaxes/telvax.tmLanguage.json in telvax/telvax,
+# which is where the grammar is edited. It looks every day, takes the file from the last commit that changed it
+# there and, if the file or the commit named in the README differs, commits it here.
+name: Sync
+
+on:
+  schedule:
+    - cron: "41 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SOURCE: editors/vscode/syntaxes/telvax.tmLanguage.json
+      TARGET: grammars/telvax.tmLanguage.json
+    steps:
+      - uses: actions/checkout@v7
+      - name: Copy the grammar
+        run: |
+          commit="$(gh api "repos/telvax/telvax/commits?path=${SOURCE}&per_page=1" --jq '.[0].sha')"
+          [ -n "$commit" ] || { echo "::error::no commit found for ${SOURCE}"; exit 1; }
+          gh api -H "Accept: application/vnd.github.raw" "repos/telvax/telvax/contents/${SOURCE}?ref=${commit}" > new.json
+          jq empty new.json # a file that is not JSON is not copied
+          cp new.json "$TARGET"
+          sed -i -E "s/^Copied from \`telvax\/telvax\` commit \`[0-9a-f]+\`\./Copied from \`telvax\/telvax\` commit \`${commit:0:7}\`./" README.md
+          grep -q "commit \`${commit:0:7}\`" README.md || { echo "::error::the README line with the commit was not found"; exit 1; }
+          if git diff --quiet; then
+            echo "the grammar is up to date (telvax/telvax@${commit:0:7})"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$TARGET" README.md
+          git commit -m "chore: the grammar of telvax/telvax@${commit:0:7}"
+          git push
