@@ -14,7 +14,7 @@ edited. This repository exists so that tools that take a grammar from a reposito
 [GitHub Linguist](https://github.com/github-linguist/linguist), can use it. Do not edit the file here:
 change it in `telvax/telvax`. A workflow (`.github/workflows/sync.yml`) copies it from there every day, and the line below says from which commit.
 
-Copied from `telvax/telvax` commit `aea7a4c`.
+Copied from `telvax/telvax` commit `7bade2c`.
 
 ## License
 
